@@ -1,38 +1,22 @@
 -- =============================================
--- DAYI SCRIPT HUB - FINAL LOADER (English)
+-- DAYI KEY SYSTEM (Hidden from Loader)
 -- =============================================
-
-print("🔄 DAYI Hub Loader Starting...")
 
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
-local UserInputService = game:GetService("UserInputService")
 
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
 local validKeys = {
-    "DAYI-VIP-2026-ABC123",
-    "DAYI-PREMIUM-XYZ789",
+    "DAYI-3OMPKJK48UX",
+    "DAYI-PREMIUM-2FDSEREUWQ",
+    -- Buraya yeni key'leri ekleyebilirsin
 }
 
 local DISCORD_LINK = "https://discord.gg/KnSX3pfwP9"
 
--- ===================== DISCORD PROMO (Bottom Right) =====================
-local DiscordLabel = Instance.new("TextLabel")
-DiscordLabel.Name = "DiscordPromo"
-DiscordLabel.Size = UDim2.new(0, 300, 0, 30)
-DiscordLabel.Position = UDim2.new(1, -310, 1, -40)
-DiscordLabel.BackgroundTransparency = 1
-DiscordLabel.Text = "Please join our Discord server!"
-DiscordLabel.TextColor3 = Color3.fromRGB(180, 0, 255)
-DiscordLabel.TextScaled = true
-DiscordLabel.Font = Enum.Font.GothamSemibold
-DiscordLabel.TextStrokeTransparency = 0.5
-DiscordLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-DiscordLabel.Parent = playerGui
-
--- ===================== KEY SYSTEM UI =====================
+-- ===================== UI =====================
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "DayiKeySystem"
 ScreenGui.ResetOnSpawn = false
@@ -95,7 +79,6 @@ VerifyButton.Font = Enum.Font.GothamBold
 VerifyButton.Parent = MainFrame
 Instance.new("UICorner", VerifyButton).CornerRadius = UDim.new(0,12)
 
--- GET KEY BUTTON
 local GetKeyButton = Instance.new("TextButton")
 GetKeyButton.Size = UDim2.new(0.85,0,0,48)
 GetKeyButton.Position = UDim2.new(0.075,0,0,300)
@@ -117,7 +100,7 @@ Status.TextScaled = true
 Status.Font = Enum.Font.GothamSemibold
 Status.Parent = MainFrame
 
--- ===================== FUNCTIONS =====================
+-- ===================== ANIMATIONS =====================
 local function openAnimation()
     MainFrame.Size = UDim2.new(0, 300, 0, 380)
     TweenService:Create(MainFrame, TweenInfo.new(0.55, Enum.EasingStyle.Quint), {
@@ -140,7 +123,9 @@ local function successClose()
     
     tween.Completed:Connect(function()
         ScreenGui:Destroy()
-        DiscordLabel:Destroy()
+        for _, v in ipairs(playerGui:GetChildren()) do
+            if v.Name == "DiscordPromo" then v:Destroy() end
+        end
         print("✅ Key Verified! Loading Main Hub...")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/SCking31/dayi-hub/refs/heads/main/dayihub.lua"))()
     end)
@@ -175,12 +160,9 @@ GetKeyButton.MouseButton1Click:Connect(function()
 end)
 
 KeyBox.FocusLost:Connect(function(enterPressed)
-    if enterPressed then 
-        VerifyButton.MouseButton1Click:Fire() 
-    end
+    if enterPressed then VerifyButton.MouseButton1Click:Fire() end
 end)
 
--- Start
 openAnimation()
 
-print("✅ DAYI Loader Loaded!")
+print("✅ DAYI Key System Loaded!")
