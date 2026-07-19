@@ -10,7 +10,7 @@ local playerGui = player:WaitForChild("PlayerGui")
 
 local validKeys = {
     "DAYI-3OMPKJK48UX",
-    "DAYI-PREMIUM-2FDSEREUWQ,"
+    "DAYI-PREMIUM-2FDSEREUWQ",
     "omer5634",
     -- Buraya yeni key'leri ekleyebilirsin
 }
