@@ -1,21 +1,28 @@
 -- =============================================
--- DAYI KEY SYSTEM (Hidden from Loader)
+-- DAYI KEY SYSTEM + Ses + Close Button
 -- =============================================
-
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
-
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
 local validKeys = {
     "DAYI-3OMPKJK48UX",
     "DAYI-PREMIUM-2FDSEREUWQ",
-    "omer5634",
+    "q",
     -- Buraya yeni key'leri ekleyebilirsin
 }
 
 local DISCORD_LINK = "https://discord.gg/KnSX3pfwP9"
+
+-- ===================== SES =====================
+local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://17584863692"  -- Gojo sesi
+sound.Volume = 0.85
+sound.Parent = game:GetService("SoundService")
+sound:Play()
+
+print("👋 Welcome back... Long time no see.")
 
 -- ===================== UI =====================
 local ScreenGui = Instance.new("ScreenGui")
@@ -38,6 +45,19 @@ Stroke.Color = Color3.fromRGB(170, 0, 255)
 Stroke.Thickness = 2
 Stroke.Transparency = 1
 
+-- Close Button (Sağ Üst)
+local CloseButton = Instance.new("TextButton")
+CloseButton.Size = UDim2.new(0, 40, 0, 40)
+CloseButton.Position = UDim2.new(1, -45, 0, 5)
+CloseButton.BackgroundTransparency = 1
+CloseButton.Text = "✕"
+CloseButton.TextColor3 = Color3.fromRGB(255, 60, 60)
+CloseButton.TextSize = 34
+CloseButton.Font = Enum.Font.GothamBold
+CloseButton.ZIndex = 10
+CloseButton.Parent = MainFrame
+
+-- Title ve diğer UI elemanları (aynı)
 local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1,0,0,90)
 Title.Position = UDim2.new(0,0,0,40)
@@ -124,13 +144,66 @@ local function successClose()
     
     tween.Completed:Connect(function()
         ScreenGui:Destroy()
-        for _, v in ipairs(playerGui:GetChildren()) do
-            if v.Name == "DiscordPromo" then v:Destroy() end
-        end
         print("✅ Key Verified! Loading Main Hub...")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/SCking31/dayi-hub/refs/heads/main/dayihub.lua"))()
     end)
 end
+
+-- ===================== CLOSE CONFIRMATION =====================
+local function createConfirmation()
+    local ConfirmFrame = Instance.new("Frame")
+    ConfirmFrame.Size = UDim2.new(0, 300, 0, 180)
+    ConfirmFrame.Position = UDim2.new(0.5, -150, 0.5, -90)
+    ConfirmFrame.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
+    ConfirmFrame.ZIndex = 20
+    ConfirmFrame.Parent = ScreenGui
+    Instance.new("UICorner", ConfirmFrame).CornerRadius = UDim.new(0, 16)
+
+    local TitleConfirm = Instance.new("TextLabel")
+    TitleConfirm.Size = UDim2.new(1,0,0,60)
+    TitleConfirm.BackgroundTransparency = 1
+    TitleConfirm.Text = "Do you wanna close this page?"
+    TitleConfirm.TextColor3 = Color3.new(1,1,1)
+    TitleConfirm.TextScaled = true
+    TitleConfirm.Font = Enum.Font.GothamSemibold
+    TitleConfirm.ZIndex = 21
+    TitleConfirm.Parent = ConfirmFrame
+
+    local CancelBtn = Instance.new("TextButton")
+    CancelBtn.Size = UDim2.new(0.45,0,0,50)
+    CancelBtn.Position = UDim2.new(0.05,0,0.6,0)
+    CancelBtn.BackgroundColor3 = Color3.fromRGB(70,70,80)
+    CancelBtn.Text = "Cancel"
+    CancelBtn.TextColor3 = Color3.new(1,1,1)
+    CancelBtn.TextScaled = true
+    CancelBtn.Font = Enum.Font.GothamSemibold
+    CancelBtn.ZIndex = 21
+    CancelBtn.Parent = ConfirmFrame
+    Instance.new("UICorner", CancelBtn).CornerRadius = UDim.new(0,12)
+
+    local YesBtn = Instance.new("TextButton")
+    YesBtn.Size = UDim2.new(0.45,0,0,50)
+    YesBtn.Position = UDim2.new(0.5,0,0.6,0)
+    YesBtn.BackgroundColor3 = Color3.fromRGB(200, 40, 40)
+    YesBtn.Text = "Yes"
+    YesBtn.TextColor3 = Color3.new(1,1,1)
+    YesBtn.TextScaled = true
+    YesBtn.Font = Enum.Font.GothamBold
+    YesBtn.ZIndex = 21
+    YesBtn.Parent = ConfirmFrame
+    Instance.new("UICorner", YesBtn).CornerRadius = UDim.new(0,12)
+
+    CancelBtn.MouseButton1Click:Connect(function()
+        ConfirmFrame:Destroy()
+    end)
+
+    YesBtn.MouseButton1Click:Connect(function()
+        ScreenGui:Destroy()
+        print("❌ Key System Closed.")
+    end)
+end
+
+CloseButton.MouseButton1Click:Connect(createConfirmation)
 
 -- ===================== BUTTONS =====================
 VerifyButton.MouseButton1Click:Connect(function()
@@ -165,5 +238,4 @@ KeyBox.FocusLost:Connect(function(enterPressed)
 end)
 
 openAnimation()
-
 print("✅ DAYI Key System Loaded!")
